@@ -1,0 +1,5 @@
+Website:  https://www.youtube.com/watch?v=7vx0RIwHVzg&list=PLhW3qG5bs-L_dJ0YvpKE0m-VK6WRsXDTp&index=1
+
+=> need to run some comments
+1. npm install -g json-server
+2. json-server --watch db.json  => open cmd on any folder, make sure in that folder has db.json file

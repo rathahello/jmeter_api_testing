@@ -1,0 +1,21 @@
+{
+  "posts": [
+    {
+      "title": "Update ixinffbqge",
+      "author": "Local Server",
+      "id": "83HutZuQvMw"
+    }
+  ],
+  "comments": [
+    {
+      "postId": "83HutZuQvMw",
+      "cmt": "Update Great Idea",
+      "id": "T0-9FVoDRvc"
+    }
+  ],
+  "profiles": {
+    "id": 1,
+    "name": "typicode"
+  },
+  "$schema": "./node_modules/json-server/schema.json"
+}
