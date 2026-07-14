@@ -7,7 +7,8 @@ on:
     branches: [ main ]
 
   workflow_dispatch:
-    spec_path:
+    inputs:
+      spec_path:
         description: 'Test Suite File'
         required: true
         default: 'my-practices/api_request_own_server.jmx'
@@ -19,7 +20,8 @@ on:
 jobs:
   jmeter-test:
     runs-on: ubuntu-latest
-    SPEC_PATH: ${{ github.event.inputs.spec_path }}
+    env:
+      SPEC_PATH: ${{ github.event.inputs.spec_path }}
 
     steps:
     - name: Checkout Code
