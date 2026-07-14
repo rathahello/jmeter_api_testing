@@ -1,0 +1,4 @@
+# Ignore local JMeter test results and logs
+jmeter-results/
+*.jtl
+jmeter.log
