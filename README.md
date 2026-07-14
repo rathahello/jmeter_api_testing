@@ -1,4 +1,5 @@
-# Project Name: JMeter API Testing
+# Project Name: jmeter_api_testing
+- Clone Project: https://github.com/rathahello/jmeter_api_testing.git
 # 1. To use JMeter tool
 - Install Java
 - Install Apache JMeter -> Extract file -> open the folder
