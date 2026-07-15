@@ -103,7 +103,7 @@ jobs:
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendDocument" \
           -F chat_id="${TG_CHAT_ID}" \
           -F document=@"jmeter-reports.zip" \
-          -F caption="$MESSAGE")
+          -F caption="$(printf '%b' "$MESSAGE")")
   # -d text="$(printf '%b' "$MESSAGE")")
   # Link to specific workflow
   # curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage"
