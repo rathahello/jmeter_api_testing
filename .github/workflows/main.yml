@@ -47,13 +47,17 @@ jobs:
         java-version: '17'
 
     - name: Install Dependencies
-      run: npm install -g json-server
-
-    - name: Install JMeter
       run: |
+        npm install -g json-server
         wget https://apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
         tar -xzf apache-jmeter-5.6.3.tgz
         echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
+
+    # - name: Install JMeter
+    #   run: |
+    #     wget https://apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+    #     tar -xzf apache-jmeter-5.6.3.tgz
+    #     echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
 
     # - name: Create Results Directory
     #   run: mkdir -p jmeter-results
@@ -86,17 +90,19 @@ jobs:
       id: artifact_link
       shell: bash
       env:
+        GITHUB_TOKEN: ${{ github.token }}
         TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        ARTIFACT_ID=$(curl -sS -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+        ARTIFACTS_RESPONSE=$(curl -fsS -H "Authorization: Bearer ${GITHUB_TOKEN}" \
           -H "Accept: application/vnd.github+json" \
-          "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" | jq -r '.artifacts[] | select(.name=="jmeter-reports") | .id')
+          "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts")
+        ARTIFACT_ID=$(echo "$ARTIFACTS_RESPONSE" | jq -r '.artifacts // [] | .[] | select(.name=="jmeter-reports") | .id' | head -n 1)
         STATUS="${{ job.status }}"
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         BRANCH="${GITHUB_REF#refs/heads/}"
         COMMIT="${GITHUB_SHA}"
-        REPORT_LINK="$ARTIFACT_ID"
+        REPORT_LINK="${ARTIFACT_ID:-unavailable}"
         MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH\nReport: $REPORT_LINK"
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
           -d chat_id="${TG_CHAT_ID}" \
