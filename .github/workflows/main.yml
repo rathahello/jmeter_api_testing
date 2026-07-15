@@ -101,9 +101,9 @@ jobs:
         COMMIT="${GITHUB_SHA}"
         MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH"
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendDocument" \
-          -d chat_id="${TG_CHAT_ID}" \
-          -d document=@"jmeter-reports.zip" \
-          -d caption="$MESSAGE")
+          -F chat_id="${TG_CHAT_ID}" \
+          -F document=@"jmeter-reports.zip" \
+          -F caption="$MESSAGE")
   # -d text="$(printf '%b' "$MESSAGE")")
   # Link to specific workflow
   # curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage"
