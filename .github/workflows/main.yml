@@ -21,7 +21,7 @@ jobs:
   jmeter-test:
     runs-on: ubuntu-latest
     env:
-      SPEC_PATH: ${{ github.event.inputs.spec_path }}
+      SPEC_PATH: ${{ github.event.inputs.spec_path || 'my-practices/api_request_own_server.jmx' }}
 
     steps:
     - name: Checkout Code
@@ -42,7 +42,7 @@ jobs:
         sudo apt-get install -y jmeter
 
     - name: Create Results Directory
-      run: mkdir jmeter-results
+      run: mkdir -p jmeter-results
 
     - name: Run JSON Server
       run: |
@@ -51,14 +51,14 @@ jobs:
 
     - name: Run JMeter Test
       run: |
-        jmeter -n -t $SPEC_PATH -l jmeter-results/results.jtl -Jjmeter.reportgenerator.outputdir=jmeter-results/dashboard -Jjmeter.reportgenerator.enabled=true
+        jmeter -n -t $SPEC_PATH -l jmeter-results/results.jtl -e -o jmeter-results/
 
-    - name: Upload Test Results
+    - name: Upload JMeter Artifacts
       if: always()
       uses: actions/upload-artifact@v4
       with:
         name: jmeter-reports
-        path: jmeter-results/reports/
+        path: jmeter-results/
         retention-days: 5
 
     - name: Telegram Notification
