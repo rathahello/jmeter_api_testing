@@ -10,3 +10,6 @@
 # 2. To run existing project:
 - Open JMeter -> Click "File" at the top bar -> Click "Open" -> Choose project file with extension .jmx -> Click "Open" button (The project structure will show on the JMeter Tool -> Click "Start" button to run the project
 
+# For more information
+- Sample path: d:\apache-jmeter-5.6.3\bin\jmeter.bat --help
+
