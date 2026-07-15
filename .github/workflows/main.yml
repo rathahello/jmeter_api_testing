@@ -1,4 +1,8 @@
-name: JMeter API Testing
+name: E2E JMeter API Testing
+
+# permissions:
+#   contents: read
+#   actions: read
 
 on:
   push:
@@ -51,8 +55,8 @@ jobs:
         tar -xzf apache-jmeter-5.6.3.tgz
         echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
 
-    - name: Create Results Directory
-      run: mkdir -p jmeter-results
+    # - name: Create Results Directory
+    #   run: mkdir -p jmeter-results
 
     - name: Run JSON Server
       run: |
@@ -61,6 +65,7 @@ jobs:
 
     - name: Run JMeter Test
       run: |
+        mkdir -p jmeter-results
         jmeter -n -t $SPEC_PATH -l jmeter-results/results.jtl -e -o jmeter-results/ -Jcsv_path=${CSV_FILE_PATH}
 
     - name: Upload JMeter Artifacts
@@ -71,18 +76,29 @@ jobs:
         path: jmeter-results/
         retention-days: 5
 
+    - name: Zip the HTML Report
+      if: always()
+      run: |
+        zip -r jmeter-report.zip jmeter-results
+
     - name: Telegram Notification
       if: always()
+      id: artifact_link
       shell: bash
       env:
         TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
+        ARTIFACT_ID=$(curl -sS -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+          -H "Accept: application/vnd.github+json" \
+          "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" | jq -r '.artifacts[] | select(.name=="jmeter-reports") | .id')
         STATUS="${{ job.status }}"
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         BRANCH="${GITHUB_REF#refs/heads/}"
         COMMIT="${GITHUB_SHA}"
-        MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH"
+        REPORT_LINK="$ARTIFACT_ID"
+        MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH\nReport: $REPORT_LINK"
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
           -d chat_id="${TG_CHAT_ID}" \
+          -d document=@"jmeter-report.zip" \
           -d text="$(printf '%b' "$MESSAGE")")
