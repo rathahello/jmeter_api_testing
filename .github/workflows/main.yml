@@ -74,6 +74,7 @@ jobs:
 
     - name: Upload JMeter Artifacts
       if: always()
+      id: artifact_upload
       uses: actions/upload-artifact@v4
       with:
         name: jmeter-reports
@@ -87,14 +88,14 @@ jobs:
 
     - name: Telegram Notification
       if: always()
-      id: artifact_link
       shell: bash
       env:
         GITHUB_TOKEN: ${{ github.token }}
         TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        DOWNLOAD_REPORT="https://nightly.link${{ github.repository }}/actions/runs/${{ github.run_id }}/jmeter-reports.zip"
+        ARTIFACT_ID="${{ steps.artifact_upload.outputs.artifact-id }}"
+        DOWNLOAD_REPORT="https://nightly.link${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/$ARTIFACT_ID"
         STATUS="${{ job.status }}"
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         BRANCH="${GITHUB_REF#refs/heads/}"
@@ -105,5 +106,4 @@ jobs:
           -d document=@"jmeter-report.zip" \
           -d text="$(printf '%b' "$MESSAGE")")
   # Link to specific workflow
-  # REPORT_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/**"
-  # https://github.com/rathahello/jmeter_api_testing/actions/runs/29393918714/artifacts/8334321768
+  # REPORT_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
