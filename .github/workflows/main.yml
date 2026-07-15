@@ -16,12 +16,21 @@ on:
         options:
           - 'my-practices/api_request_own_server.jmx'
           - 'my-practices/Assertion.jmx'
+      csv_path:
+        description: 'CSV File Path'
+        required: true
+        default: 'csv/test_data.csv'
+        type: choice
+        options:
+          - 'csv/test_data.csv'
+          - 'csv/another_test_data.csv'
 
 jobs:
   jmeter-test:
     runs-on: ubuntu-latest
     env:
       SPEC_PATH: ${{ github.event.inputs.spec_path || 'my-practices/api_request_own_server.jmx' }}
+      CSV_FILE_PATH: ${{ github.event.inputs.csv_path || 'csv/test_data.csv' }}
 
     steps:
     - name: Checkout Code
@@ -52,7 +61,7 @@ jobs:
 
     - name: Run JMeter Test
       run: |
-        jmeter -n -t $SPEC_PATH -l jmeter-results/results.jtl -e -o jmeter-results/
+        jmeter -n -t $SPEC_PATH -l jmeter-results/results.jtl -e -o jmeter-results/ -Jcsv_path=${CSV_FILE_PATH}
 
     - name: Upload JMeter Artifacts
       if: always()

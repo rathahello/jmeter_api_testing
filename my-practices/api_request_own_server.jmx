@@ -44,7 +44,7 @@
       <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config">
         <stringProp name="delimiter">,</stringProp>
         <stringProp name="fileEncoding"></stringProp>
-        <stringProp name="filename">D:/apache-jmeter-5.6.3/jmeter-api-testing/csv/test_data.csv</stringProp>
+        <stringProp name="filename">${__P(csv_path)}</stringProp>
         <boolProp name="ignoreFirstLine">true</boolProp>
         <boolProp name="quotedData">false</boolProp>
         <boolProp name="recycle">false</boolProp>
@@ -70,7 +70,7 @@
           <boolProp name="IfController.useExpression">true</boolProp>
         </IfController>
         <hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="For post features - If Controller">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="For Post features - If Controller">
             <stringProp name="IfController.condition">${__groovy(&quot;${action}&quot; == &quot;create_post&quot;)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
@@ -183,7 +183,7 @@ vars.put(&quot;new_title&quot;, random_str)</stringProp>
               <hashTree/>
             </hashTree>
           </hashTree>
-          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="For comment features - If Controller">
+          <IfController guiclass="IfControllerPanel" testclass="IfController" testname="For Comment features - If Controller">
             <stringProp name="IfController.condition">${__groovy(&quot;${action}&quot; == &quot;create_cmt&quot;)}</stringProp>
             <boolProp name="IfController.evaluateAll">false</boolProp>
             <boolProp name="IfController.useExpression">true</boolProp>
@@ -325,7 +325,7 @@ vars.put(&quot;random_cmt&quot;, randomComment);
               </elementProp>
             </HTTPSamplerProxy>
             <hashTree/>
-            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${no} - Delete Comment">
+            <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${no} - Delete Comment" enabled="false">
               <stringProp name="HTTPSampler.domain">${domain}</stringProp>
               <stringProp name="HTTPSampler.port">3000</stringProp>
               <stringProp name="HTTPSampler.protocol">http</stringProp>
