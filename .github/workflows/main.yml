@@ -58,7 +58,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: jmeter-reports
-        path: Results/reports/
+        path: jmeter-results/reports/
         retention-days: 5
 
     - name: Telegram Notification
