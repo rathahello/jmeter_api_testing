@@ -1,9 +1,5 @@
 name: E2E JMeter API Testing
 
-# permissions:
-#   contents: read
-#   actions: read
-
 on:
   push:
     branches: [ main ]
@@ -53,15 +49,6 @@ jobs:
         tar -xzf apache-jmeter-5.6.3.tgz
         echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
 
-    # - name: Install JMeter
-    #   run: |
-    #     wget https://apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
-    #     tar -xzf apache-jmeter-5.6.3.tgz
-    #     echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
-
-    # - name: Create Results Directory
-    #   run: mkdir -p jmeter-results
-
     - name: Run JSON Server
       run: |
         json-server --watch api_own_server/db.json --port 3000 &
@@ -104,11 +91,8 @@ jobs:
           -F chat_id="${TG_CHAT_ID}" \
           -F document=@"jmeter-reports.zip" \
           -F caption="$(printf '%b' "$MESSAGE")")
-  # -d text="$(printf '%b' "$MESSAGE")")
+  
   # Link to specific workflow
   # curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage"
   # REPORT_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
   # ARTIFACT_ID="${{ steps.artifact_upload.outputs.artifact-id }}"
-  # "https://nightly.link/${{ github.repository }}/actions/artifacts/jmeter-reports.zip"
-  # ARTIFACT_ID="${{ steps.artifact_upload.outputs.artifact-id }}"
-  # DOWNLOAD_REPORT="https://github.com/$REPO_PATH/actions/runs/${{ github.run_id }}/artifacts/$ARTIFACT_ID"
