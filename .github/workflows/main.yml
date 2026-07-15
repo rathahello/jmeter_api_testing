@@ -94,7 +94,7 @@ jobs:
         TG_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TG_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        REPORT_LINK="https://github.com{{ github.repository }}/actions/runs/${{ github.run_id }}"
+        REPORT_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         STATUS="${{ job.status }}"
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         BRANCH="${GITHUB_REF#refs/heads/}"

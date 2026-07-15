@@ -11,7 +11,7 @@
 - Open JMeter tool -> Click "File" at the top bar 
 - Click "Open" -> Choose project file with extension .jmx -> Click "Open" button (The project structure will show on the JMeter Tool -> Click "Start" button to run the project)
 
-# For more information 
+# For more information about Jmeter
 - Open cmd and run this: d:\apache-jmeter-5.6.3\bin\jmeter.bat --help
     1. Note: if your jmeter is in path drive D
 
