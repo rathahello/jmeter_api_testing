@@ -1,15 +1,17 @@
 # Project Name: jmeter_api_testing
 - Clone Project: https://github.com/rathahello/jmeter_api_testing.git
 # 1. To use JMeter tool
-- Install Java
-- Install Apache JMeter -> Extract file -> open the folder
-- Open JMeter: Go to "bin" directory
+- Install Java -> check java version (java -v)
+- Install Apache JMeter -> Extract file
+- Open JMeter folder: Go to "bin" directory
    1. Window: Double click "jmeter.bat" or "ApacheJMeter.jar" file or run cmd -> cd apache-jmeter-5.6.x\bin -> jmeter.bat
    2. Linux/MacOS: open terminal -> cd apache-jmeter-5.6.x/bin -> ./jmeter
 
-# 2. To run existing project:
-- Open JMeter -> Click "File" at the top bar -> Click "Open" -> Choose project file with extension .jmx -> Click "Open" button (The project structure will show on the JMeter Tool -> Click "Start" button to run the project
+# 2. To run existing project in local machine:
+- Open JMeter tool -> Click "File" at the top bar 
+- Click "Open" -> Choose project file with extension .jmx -> Click "Open" button (The project structure will show on the JMeter Tool -> Click "Start" button to run the project)
 
-# For more information
-- Sample path: d:\apache-jmeter-5.6.3\bin\jmeter.bat --help
+# For more information about Jmeter
+- Open cmd and run this: d:\apache-jmeter-5.6.3\bin\jmeter.bat --help
+    1. Note: if your jmeter is in path drive D
 
