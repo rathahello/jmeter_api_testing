@@ -96,11 +96,12 @@ jobs:
       run: |
         REPO_PATH="${{ github.repository }}"
         BRANCH="${GITHUB_REF#refs/heads/}"
-        DOWNLOAD_REPORT="https://nightly.link/$REPO_PATH/workflows/main.yml/$BRANCH/jmeter-reports.zip"
+        ARTIFACT_ID="${{ steps.artifact_upload.outputs.artifact-id }}"
+        DOWNLOAD_REPORT="https://github.com/$REPO_PATH/actions/runs/${{ github.run_id }}/artifacts/ARTIFACT_ID"
         STATUS="${{ job.status }}"
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         COMMIT="${GITHUB_SHA}"
-        MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH\nReport: [Click here to download ZIP Report]($DOWNLOAD_REPORT)"
+        MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH\nReport: <a href='$DOWNLOAD_REPORT'>Click here to download ZIP Report</a>"
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
           -d chat_id="${TG_CHAT_ID}" \
           -d document=@"jmeter-report.zip" \
@@ -108,3 +109,4 @@ jobs:
   # Link to specific workflow
   # REPORT_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
   # ARTIFACT_ID="${{ steps.artifact_upload.outputs.artifact-id }}"
+  # "https://nightly.link/${{ github.repository }}/actions/artifacts/jmeter-reports.zip"
