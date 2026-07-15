@@ -38,8 +38,9 @@ jobs:
 
     - name: Install JMeter
       run: |
-        sudo apt-get update
-        sudo apt-get install -y jmeter
+        wget https://apache.org
+        tar -xzf apache-jmeter-5.6.3.tgz
+        echo "$(pwd)/apache-jmeter-5.6.3/bin" >> $GITHUB_PATH
 
     - name: Create Results Directory
       run: mkdir -p jmeter-results
@@ -72,7 +73,7 @@ jobs:
         PROJECT=$(basename "$GITHUB_REPOSITORY")
         BRANCH="${GITHUB_REF#refs/heads/}"
         COMMIT="${GITHUB_SHA}"
-        MESSAGE="JMeter: Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH"
+        MESSAGE="GitHub Actions Pipeline Completed\n\nProject: $PROJECT\nBranch: $BRANCH\nCommit: $COMMIT\nWorkflow: ${{ github.workflow }}\nStatus: $STATUS\nPath: $SPEC_PATH"
         RESPONSE=$(curl -sS -X POST "https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage" \
           -d chat_id="${TG_CHAT_ID}" \
           -d text="$(printf '%b' "$MESSAGE")")
